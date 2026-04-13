@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<title>🔥 Color Trade Unlimited</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+    body {margin:0;font-family:'Poppins',sans-serif;background:linear-gradient(135deg,#0f172a,#1e2937);color:#e2e8f0;min-height:100vh;text-align:center;}
+    .landing {min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,#1e3a8a,#4c1d95);}
+    .neon-btn {background:linear-gradient(135deg,#f97316,#eab308);color:#000;font-size:24px;font-weight:700;padding:20px 60px;border:none;border-radius:50px;box-shadow:0 0 40px #f59e0b;margin-top:30px;cursor:pointer;transition:0.4s;}
+    .neon-btn:hover {transform:scale(1.1);box-shadow:0 0 60px #fbbf24;}
+    .card {background:rgba(30,41,59,0.95);margin:15px;padding:20px;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,0.4);}
+    input {width:85%;padding:14px;margin:10px 0;border-radius:12px;background:#334155;color:white;border:none;}
+    button {padding:14px 28px;margin:8px;border:none;border-radius:12px;font-weight:600;cursor:pointer;}
+    .primary {background:linear-gradient(135deg,#3b82f6,#1e40af);color:white;}
+    .success {background:linear-gradient(135deg,#22c55e,#15803d);color:white;}
+    .red {background:linear-gradient(135deg,#ef4444,#b91c1c);color:white;}
+    .green {background:linear-gradient(135deg,#22c55e,#15803d);color:white;}
+    .hidden {display:none !important;}
+    #timer {font-size:52px;font-weight:700;color:#60a5fa;text-shadow:0 0 20px #3b82f6;}
+    .bottom-nav {position:fixed;bottom:0;left:0;right:0;background:rgba(15,23,42,0.98);display:flex;justify-content:space-around;padding:10px 0;z-index:1000;border-top:1px solid #334155;}
+    .nav-item {color:#94a3b8;font-size:12px;cursor:pointer;}
+    .nav-item.active {color:#60a5fa;}
+    .nav-item span {font-size:26px;display:block;margin-bottom:3px;}
+    .admin-link {margin:20px 0;color:#94a3b8;cursor:pointer;}
+</style>
+</head>
+<body>
+
+<!-- LANDING PAGE -->
+<div id="landing" class="landing">
+    <h1 style="font-size:42px;margin:0;">🔥 COLOR TRADE</h1>
+    <h2 style="margin:10px 0 40px;">UNLIMITED 💰</h2>
+    <button class="neon-btn" onclick="goToAuth()">🚀 ENTER GAME NOW</button>
+    <p style="margin-top:50px;color:#c4d0ff;">Play • Trade • Earn • Withdraw</p>
+</div>
+
+<!-- AUTH PAGE (Register / Login) -->
+<div id="auth" class="hidden card">
+    <h2>🚀 Welcome to Color Trade Unlimited</h2>
+
+    <div id="loginForm">
+        <h3>🔑 Login</h3>
+        <input id="loginUser" placeholder="👤 Username"><br>
+        <input id="loginPass" type="password" placeholder="🔑 Password"><br>
+        <button onclick="login()" class="primary" style="width:85%;">Login Now →</button>
+        <p style="margin:15px 0;color:#94a3b8;">Don't have account? 
+            <span onclick="showRegister()" style="color:#60a5fa;cursor:pointer;">Register Here</span>
+        </p>
+    </div>
+
+    <div id="registerForm" class="hidden">
+        <h3>📝 Register New Account</h3>
+        <input id="regUser" placeholder="👤 Username"><br>
+        <input id="regEmail" type="email" placeholder="✉️ Gmail Address"><br>
+        <input id="regPass" type="password" placeholder="🔑 Password"><br>
+        <input id="regConfirm" type="password" placeholder="🔁 Confirm Password"><br>
+        <input id="regRef" placeholder="🔗 Referral Code (optional)"><br>
+        <button onclick="register()" class="success" style="width:85%;">Create Account ✅</button>
+        <p style="margin:15px 0;color:#94a3b8;">Already have account? 
+            <span onclick="showLogin()" style="color:#60a5fa;cursor:pointer;">Login Here</span>
+        </p>
+    </div>
+</div>
+
+<!-- GAME PAGE -->
+<div id="game" class="hidden">
+
+    <div class="card">
+        <h2>💰 Balance: <span id="balance">0</span></h2>
+    </div>
+
+    <!-- Trade Section -->
+    <div id="section-trade" class="card">
+        <h2>🎯 Place Your Trade</h2>
+        <h1 id="timer">60</h1>
+        <button class="red" onclick="buy('red')">🔴 Red (10)</button>
+        <button class="green" onclick="buy('green')">🟢 Green (10)</button>
+        <br><br>
+        <button onclick="play()" class="primary" style="padding:16px 50px;font-size:18px;">🚀 Submit Trade</button>
+    </div>
+
+    <!-- Add Money Section -->
+    <div id="section-add" class="card hidden">
+        <h2>💳 Add Money</h2>
+        <p><strong>bKash / Nagad:</strong> 01961429949</p>
+        <p><strong>Rocket:</strong> 01326616247</p>
+        <input id="trx" placeholder="🔢 Transaction ID">
+        <button onclick="addMoney()" class="success">Submit Request ✅</button>
+    </div>
+
+    <!-- Withdraw Section -->
+    <div id="section-withdraw" class="card hidden">
+        <h2>💸 Withdraw Money</h2>
+        <button onclick="withdraw(320)" style="background:#eab308;">💵 320 Taka</button>
+        <button onclick="withdraw(450)" style="background:#eab308;">💵 450 Taka</button>
+        <button onclick="withdraw(960)" style="background:#eab308;">💵 960 Taka</button>
+    </div>
+
+    <!-- Referral Section -->
+    <div id="section-referral" class="card hidden">
+        <h2>👥 Referral Income</h2>
+        <p>Your Referral Code: <strong id="myRefCode" style="color:#fbbf24;font-size:20px;"></strong></p>
+        <p>Referral bonus will appear here automatically.</p>
+    </div>
+
+    <!-- History -->
+    <div class="card">
+        <h3>📜 Recent History</h3>
+        <div id="history"></div>
+    </div>
+
+    <!-- Admin Panel Link -->
+    <div class="admin-link" onclick="showAdminLogin()">👑 Admin Panel</div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <div class="nav-item active" onclick="switchSection(0)"><span>🏠</span>Home</div>
+        <div class="nav-item" onclick="switchSection(1)"><span>💰</span>Add</div>
+        <div class="nav-item" onclick="switchSection(2)"><span>💸</span>Withdraw</div>
+        <div class="nav-item" onclick="switchSection(3)"><span>👥</span>Refer</div>
+    </div>
+</div>
+
+<!-- ADMIN LOGIN MODAL -->
+<div id="adminLoginPage" class="hidden" style="position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.95);z-index:9999;display:flex;align-items:center;justify-content:center;">
+    <div class="card" style="max-width:380px;">
+        <h1 style="font-size:48px;margin:0;">👑</h1>
+        <h2>Admin Control Center</h2>
+        <input id="adminUser" placeholder="Admin Username" value="toybur666"><br>
+        <input id="adminPass" type="password" placeholder="Password" value="toybur666"><br>
+        <button onclick="checkAdminLogin()" class="primary" style="width:90%;padding:16px;font-size:18px;">🚀 Enter Admin Panel</button>
+        <br><br>
+        <small onclick="document.getElementById('adminLoginPage').classList.add('hidden')" style="cursor:pointer;color:#94a3b8;">Close</small>
+    </div>
+</div>
+
+<script>
+// ====================== VARIABLES ======================
+let currentUser = null;
+let balance = 0;
+let selected = [];
+let time = 60;
+
+// ====================== LANDING & AUTH ======================
+function goToAuth() {
+    document.getElementById('landing').classList.add('hidden');
+    document.getElementById('auth').classList.remove('hidden');
+}
+
+function showRegister() {
+    document.getElementById('loginForm').classList.add('hidden');
+    document.getElementById('registerForm').classList.remove('hidden');
+}
+
+function showLogin() {
+    document.getElementById('registerForm').classList.add('hidden');
+    document.getElementById('loginForm').classList.remove('hidden');
+}
+
+// ====================== REGISTER (Balance = 0) ======================
+function register() {
+    let user = document.getElementById('regUser').value.trim();
+    let email = document.getElementById('regEmail').value.trim();
+    let pass = document.getElementById('regPass').value;
+    let confirm = document.getElementById('regConfirm').value;
+    let ref = document.getElementById('regRef').value.trim();
+
+    if (!user || !pass || !confirm) return alert("❌ সব ফিল্ড পূরণ করুন!");
+    if (pass !== confirm) return alert("❌ Password মিলছে না!");
+
+    let users = JSON.parse(localStorage.getItem("users")) || {};
+    if (users[user]) return alert("❌ Username ইতিমধ্যে নেওয়া হয়েছে!");
+
+    users[user] = {
+        email: email,
+        password: pass,
+        balance: 0,           // নতুন ইউজারের ব্যালেন্স সবসময় 0
+        history: [],
+        ref: ref,
+        bonus: 0,
+        banned: false
+    };
+
+    if (ref && users[ref]) users[ref].bonus += 50;
+
+    localStorage.setItem("users", JSON.stringify(users));
+    alert("✅ Registration Successful! Now you can Login.");
+    showLogin();
+}
+
+// ====================== LOGIN ======================
+function login() {
+    let u = document.getElementById('loginUser').value.trim();
+    let p = document.getElementById('loginPass').value;
+
+    let users = JSON.parse(localStorage.getItem("users")) || {};
+    if (!users[u]) return alert("❌ User not found!");
+    if (users[u].password !== p) return alert("❌ Wrong Password!");
+    if (users[u].banned) return alert("🚫 You are Banned!");
+
+    currentUser = u;
+    balance = users[u].balance;
+
+    document.getElementById('auth').classList.add('hidden');
+    document.getElementById('game').classList.remove('hidden');
+
+    document.getElementById('myRefCode').innerText = currentUser;
+    updateBalance();
+    renderHistory();
+    startTimer();
+}
+
+// ====================== TRADE FUNCTIONS ======================
+function buy(c) {
+    if (balance < 10) return alert("💸 Insufficient Balance!");
+    balance -= 10;
+    selected.push(c);
+    updateBalance();
+}
+
+function play() {
+    if (selected.length === 0) return alert("অন্তত একটা কালার সিলেক্ট করুন!");
+
+    let result = Math.random() < 0.5 ? "red" : "green";
+    let win = 0;
+    selected.forEach(col => { if (col === result) win += 20; });
+
+    balance += win;
+
+    let users = JSON.parse(localStorage.getItem("users"));
+    let ref = users[currentUser].ref;
+    if (ref && users[ref]) {
+        users[ref].balance += Math.floor(win * 0.1);
+    }
+
+    saveHistory(`🎲 ${result === 'red' ? '🔴 Red' : '🟢 Green'} | Win: ${win} 💰`);
+    selected = [];
+    updateBalance();
+}
+
+function saveHistory(text) {
+    let users = JSON.parse(localStorage.getItem("users"));
+    users[currentUser].history.unshift(text);
+    users[currentUser].balance = balance;
+    localStorage.setItem("users", JSON.stringify(users));
+    renderHistory();
+}
+
+function updateBalance() {
+    document.getElementById('balance').innerText = balance;
+}
+
+function renderHistory() {
+    let users = JSON.parse(localStorage.getItem("users"));
+    let h = users[currentUser].history;
+    let html = h.length ? h.map(item => `<div style="background:rgba(15,23,42,0.7);padding:12px;margin:8px 0;border-radius:12px;text-align:left;">${item}</div>`).join('') : '<p style="color:#64748b;">No trades yet...</p>';
+    document.getElementById('history').innerHTML = html;
+}
+
+function startTimer() {
+    setInterval(() => {
+        time--;
+        document.getElementById('timer').innerText = time;
+        if (time <= 0) { play(); time = 60; }
+    }, 1000);
+}
+
+// ====================== ADD MONEY & WITHDRAW ======================
+function addMoney() {
+    let trx = document.getElementById('trx').value.trim();
+    if (!trx) return alert("Transaction ID দিন!");
+    let req = JSON.parse(localStorage.getItem("addReq")) || [];
+    req.push({user:currentUser, trx:trx, status:"pending", time:new Date().toLocaleString()});
+    localStorage.setItem("addReq", JSON.stringify(req));
+    alert("✅ Add Money Request Sent to Admin!");
+}
+
+function withdraw(amount) {
+    if (balance < amount) return alert("💸 Low Balance!");
+    let req = JSON.parse(localStorage.getItem("wdReq")) || [];
+    req.push({user:currentUser, amount:amount, status:"pending", time:new Date().toLocaleString()});
+    localStorage.setItem("wdReq", JSON.stringify(req));
+    alert(`💵 Withdraw request for ${amount} Taka sent!`);
+}
+
+// ====================== SECTION SWITCH ======================
+function switchSection(n) {
+    document.querySelectorAll('.nav-item').forEach((el,i) => el.classList.toggle('active', i===n));
+
+    document.getElementById('section-trade').classList.add('hidden');
+    document.getElementById('section-add').classList.add('hidden');
+    document.getElementById('section-withdraw').classList.add('hidden');
+    document.getElementById('section-referral').classList.add('hidden');
+
+    if (n === 0) document.getElementById('section-trade').classList.remove('hidden');
+    if (n === 1) document.getElementById('section-add').classList.remove('hidden');
+    if (n === 2) document.getElementById('section-withdraw').classList.remove('hidden');
+    if (n === 3) document.getElementById('section-referral').classList.remove('hidden');
+}
+
+// ====================== ADMIN PANEL ======================
+function showAdminLogin() {
+    document.getElementById('adminLoginPage').classList.remove('hidden');
+}
+
+function checkAdminLogin() {
+    let u = document.getElementById('adminUser').value;
+    let p = document.getElementById('adminPass').value;
+    if (u === "toybur666" && p === "toybur666") {
+        document.getElementById('adminLoginPage').classList.add('hidden');
+        openAdminPanel();
+    } else {
+        alert("❌ Wrong Admin Username or Password!");
+    }
+}
+
+function openAdminPanel() {
+    let users = JSON.parse(localStorage.getItem("users")) || {};
+    let wdReq = JSON.parse(localStorage.getItem("wdReq")) || [];
+    let addReq = JSON.parse(localStorage.getItem("addReq")) || [];
+
+    let html = `
+    <div style="padding:20px;background:#0f172a;color:white;min-height:100vh;">
+        <h1 style="text-align:center;">👑 ADMIN DASHBOARD</h1>
+        
+        <h2>👥 All Users</h2>
+        <div id="userList"></div>
+
+        <h2>💸 Withdraw Requests</h2>
+        <div id="wdHistory"></div>
+
+        <h2>💰 Add Money Requests</h2>
+        <div id="addHistory"></div>
+
+        <button onclick="location.reload()" style="margin:30px auto;display:block;padding:12px 40px;background:#3b82f6;color:white;border:none;border-radius:12px;">🔄 Refresh</button>
+    </div>`;
+
+    let container = document.createElement('div');
+    container.innerHTML = html;
+    document.body.innerHTML = '';
+    document.body.appendChild(container);
+
+    // Render Users with Ban/Unban
+    let userHTML = '';
+    Object.keys(users).forEach(username => {
+        let user = users[username];
+        userHTML += `
+        <div style="display:flex;justify-content:space-between;align-items:center;background:rgba(15,23,42,0.6);padding:12px;margin:8px 0;border-radius:12px;">
+            <div>👤 <strong>${username}</strong><br>Balance: ${user.balance} | ${user.banned ? '🚫 Banned' : '✅ Active'}</div>
+            <button onclick="toggleBan('\( {username}')" style="background: \){user.banned ? '#22c55e' : '#ef4444'};color:white;padding:8px 16px;border-radius:8px;">
+                ${user.banned ? 'Unban' : 'Ban'}
+            </button>
+        </div>`;
+    });
+    document.getElementById('userList').innerHTML = userHTML || '<p>No users registered yet.</p>';
+
+    // Render Histories
+    document.getElementById('wdHistory').innerHTML = wdReq.map(r => 
+        `<div style="background:rgba(30,41,59,0.8);padding:12px;margin:8px 0;border-radius:12px;">${r.user} → ${r.amount} Taka | ${r.status} | ${r.time}</div>`
+    ).join('');
+
+    document.getElementById('addHistory').innerHTML = addReq.map(r => 
+        `<div style="background:rgba(30,41,59,0.8);padding:12px;margin:8px 0;border-radius:12px;">${r.user} → TRX: ${r.trx} | ${r.status} | ${r.time}</div>`
+    ).join('');
+}
+
+function toggleBan(username) {
+    let users = JSON.parse(localStorage.getItem("users")) || {};
+    if (users[username]) {
+        users[username].banned = !users[username].banned;
+        localStorage.setItem("users", JSON.stringify(users));
+        alert(`User ${username} ${users[username].banned ? 'banned' : 'unbanned'}!`);
+        openAdminPanel(); // Refresh
+    }
+}
+</script>
+</body>
+</html>
